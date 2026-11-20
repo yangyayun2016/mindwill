@@ -152,7 +152,7 @@ flowchart TD
 
 ## 竞品与对照范围
 
-下面 31 条是 2026-11-20（Asia/Shanghai）从 [Windmill alternatives and comparisons](https://www.windmill.dev/compare) 核对到的官方对照目录（页面声明 numberOfItems 为 31），作为 Mindwill 后续对照清单，不是 Mindwill 已经写好的对比文。Dify、FastGPT、mindflow.io 出现在 Mindwill 关于文案中，但不在该 31 条里。
+下面 31 条是 2026-11-20（Asia/Shanghai）从 [Windmill alternatives and comparisons](https://www.windmill.dev/compare) 核对到的官方对照目录（页面声明 numberOfItems 为 31），作为 Mindwill 后续对照清单，不是 Mindwill 已经写好的对比文。Dify、FastGPT、mindflow.io 出现在 Mindwill 关于文案中，但不在该 31 条里。对照阅读要点、Temporal 参照，以及 Windmill 信任中心的安全与合规摘记，见 [research-notes.md](research-notes.md)。
 
 | 分类 | 条目 | 来源页 |
 | --- | --- | --- |
@@ -197,10 +197,11 @@ flowchart TD
 | 公开仓库已创建 | 已完成 | yangyayun2016/mindwill，2026-11-19 创建 |
 | 定位已落在设计思路文档里 | 已完成 | 天机跨境旗下 Mindwill，IPaaS |
 | 关于文案、拟用标签与对照范围已写入蓝图 | 已完成 | mindwill.dev；本文档即仓库中的蓝图正文 |
-| 把五层架构文档写入仓库 | 本提交写入 | 见本文「五层架构」 |
-| 沉淀 Flow 元素词汇 | 本提交写入 | 见本文「Flow 构建元素」 |
-| 写入退款审批示例 playbook | 本提交写入 | 作为验证用例，非线上业务 |
-| 设计黑匣子字段类别 | 本提交写入类别，不锁 schema | 输入、步骤结果、审批决策、重试、错误、Changelog |
+| 把五层架构文档写入仓库 | 已完成 | 见本文「五层架构」 |
+| 沉淀 Flow 元素词汇 | 已完成 | 见本文「Flow 构建元素」 |
+| 写入退款审批示例 playbook | 已完成 | 作为验证用例，非线上业务 |
+| 设计黑匣子字段类别 | 已完成类别，不锁 schema | 输入、步骤结果、审批决策、重试、错误、Changelog |
+| 写入对照与参照笔记 | 本提交写入 | 见 [research-notes.md](research-notes.md)；整理笔记，非实测、非 Mindwill 已有认证 |
 | 选定一个最小可跑通的验证流并先跑通 | 未开始 | 尚未选定 |
 
 ## 来源
@@ -209,3 +210,5 @@ flowchart TD
 - [Flows quickstart](https://www.windmill.dev/docs/getting_started/flows_quickstart)
 - [Workflows as code](https://www.windmill.dev/docs/core_concepts/workflows_as_code)
 - [Windmill alternatives and comparisons](https://www.windmill.dev/compare)
+- [Temporal](https://temporal.io/)
+- [Windmill Trust Center](https://trust.windmill.dev/)

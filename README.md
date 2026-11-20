@@ -30,8 +30,12 @@
 - 竞品与对照范围（Windmill 官方对比目录 31 条，加 Mindwill 自身对照对象）
 - 前期构筑顺序
 
+对照阅读、Temporal 参照，以及 Windmill 信任中心的安全与合规摘记，见 [docs/research-notes.md](docs/research-notes.md)。这些是整理材料后的参照笔记，不是 Mindwill 的实测结论或已获得的认证。
+
 ## 来源
 
 - [Flows quickstart](https://www.windmill.dev/docs/getting_started/flows_quickstart)
 - [Workflows as code](https://www.windmill.dev/docs/core_concepts/workflows_as_code)
 - [Windmill alternatives and comparisons](https://www.windmill.dev/compare)
+- [Temporal](https://temporal.io/)
+- [Windmill Trust Center](https://trust.windmill.dev/)
