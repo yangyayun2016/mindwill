@@ -6,6 +6,18 @@
 
 本文是可迭代的前期构筑蓝图，不是已上线产品说明书。Flow 元素与退款流程提炼自 Windmill 官方「What is a flow」演示及文档。形成 90% 自动化是目标，不是现状。「经测试，性能优于 Windmill、Airflow、Prefect、Temporal 和 mindflow.io」是产品定位主张，本文未附测试方法或数据，不作为已验证结论。
 
+## 已拍板决策
+
+2026-11-23（Asia/Shanghai），所有者阳亚运 / Emily Starai 拍板以下三项。这三项按已定事实写入；站点域名仍未取舍。
+
+| 事项 | 决定 |
+| --- | --- |
+| 第一条可跑通的验证流 | 场景定为跨境电商。具体 Flow 尚未设计，也尚未运行；本文不写具体步骤 |
+| 部署 | 私有云部署 |
+| 工作流格式 | Mindwill 自研格式：JSON / YAML，加上 TypeScript / Python。这是 Mindwill 自己的格式，不沿用 Windmill 的产品格式；具体 schema 尚未设计。文中的 Windmill Flow 词汇与退款店铺 playbook 只作参照，不是这条验证流，也不是已实现产品 |
+
+站点域名仍开放。About 与拟用标签仍按 mindwill.dev 书写；Mindwill.io、Mindwill.ai、Mindwillai.com 仍是材料中出现过的候选，尚未宣布取舍。
+
 ## 定位与目标
 
 > 把你的想法变成专业的可执行代码、AI 工程、app 应用程序；追求稳定性，先跑通验证（SOP、AI 决策、编排 workflow）。
@@ -36,7 +48,7 @@
 | --- | --- | --- |
 | 呈现的效果 | 想法变成可执行流程：SOP、AI 决策、编排 workflow；稳定跑通验证；人机协同，越用越好；目标形成 90% 自动化与智能决策，人仍可辅助；业务团队能用 AI 快速搭建，工程师把关发布 | 可视化 Flow、workspace 与工作看板、AI 工作台、审批界面、App 调用 |
 | 交付的内容 | 流程定义、可复用连接与资产、组织执行单元、审批与监督记录、复盘结论 | 架构文档、Flow、skill、prompt、知识库与问题库引用、Changelog、复盘报告 |
-| 输出格式 | 流程与跑次过程可存储、可回放、可学习；只写材料中已出现的形式，不预设未确认的 schema | Flow 定义（JSON / YAML，或 TypeScript / Python 的 workflows as code）；运行日志与步骤结果；审批记录；资产/密钥引用；Changelog 与各类 log；复盘报告 |
+| 输出格式 | 流程与跑次过程可存储、可回放、可学习。工作流格式已定为 Mindwill 自研：JSON / YAML，加上 TypeScript / Python；具体 schema 尚未设计，本文不预设字段 | 自研 Flow 定义（JSON / YAML，以及 TypeScript / Python）；运行日志与步骤结果；审批记录；资产/密钥引用；Changelog 与各类 log；复盘报告 |
 
 ## 五层架构
 
@@ -50,7 +62,7 @@ flowchart LR
 
 | 层级 | 职责 | 主要资产 | 给谁看 | 交付物 |
 | --- | --- | --- | --- | --- |
-| ① 基础建设 / 思考层 | 打通信息孤岛与技术壁垒；汇总连接；本地或云端私有化部署；目标与流程拆解、编排与 Roadmap；与大模型集成，all-in-one station 的大脑与眼睛；流程编辑器 | MCP、API、ERP、SaaS、App、数据库、知识库（RPA/接口抓取）；云服务器、知识库、问题库、密码库；Skills and MCP connections | 平台与编排者、大模型 | 可复用连接、流程定义、Roadmap |
+| ① 基础建设 / 思考层 | 打通信息孤岛与技术壁垒；汇总连接；私有云部署（已定取向）；目标与流程拆解、编排与 Roadmap；与大模型集成，all-in-one station 的大脑与眼睛；流程编辑器 | MCP、API、ERP、SaaS、App、数据库、知识库（RPA/接口抓取）；云服务器、知识库、问题库、密码库；Skills and MCP connections | 平台与编排者、大模型 | 可复用连接、流程定义、Roadmap |
 | ② 执行层 | 部署与构建 Agent/Bot、独立 App/SaaS；企业组织/部门/团队/小组执行任务，也可寻求外部服务 | skill、prompt、组织与管理、知识库、问题库；手和脚、身体各部位 | Agent/Bot 与执行团队 | 可运行的任务与服务 |
 | ③ 设计 / 交付 / 应用层 | 区分给人看的与给 AI Agent/Bot 看的；人做交互与决策，大模型辅助编排；稳定输出、监督、执行；工具审批与人工审核 | workspace、工作看板、UI、AI 工作台 | 人（交互与决策）、AI Agent/Bot（被编排的执行视图） | 工作台交互、审批结论、稳定产出 |
 | ④ 赋能 / 价值提升层 | 督察、监督、赋能、自主学习；分析、复盘、总结；人机协同，越用越好；目标形成 90% 自动化与智能决策，人仍可辅助 | 运行日志、Changelog、各类 log、黑匣子记录 | 监督者、AI 学习与监督、复盘者 | 复盘报告、决策改进、自动化比例提升（目标） |
@@ -60,7 +72,7 @@ flowchart LR
 
 ## Flow 构建元素
 
-Flow 是步骤图（DAG / 状态机），以 JSON 或 YAML 存储；每一步是 worker 上的独立 job。以下元素提炼自 Windmill 演示与文档，并映射到 Mindwill 五层，作为构筑词汇，不是已实现清单。
+Flow 在参照材料里是步骤图（DAG / 状态机）。Windmill 演示以 JSON 或 YAML 存储，每一步是 worker 上的独立 job。以下元素提炼自 Windmill 演示与文档，并映射到 Mindwill 五层，作为构筑词汇，不是已实现清单，也不是 Mindwill 自研格式的字段 schema。
 
 ### 步骤与控制元素
 
@@ -124,7 +136,7 @@ flowchart TD
   pay -.->|重试耗尽| err["Error handler<br/>通知 finance"]
 ```
 
-这是 Windmill 官方演示中的虚构店铺退款流程，用来对照验证 Mindwill 的触发、资产、AI 决策、人工审批、容错与黑匣子，不是已经上线的业务。
+这是 Windmill 官方演示中的虚构店铺退款流程，用来对照触发、资产、AI 决策、人工审批、容错与黑匣子。它只是参照示例，不是已选定的第一条验证流，也不是已经上线的业务。
 
 1. **触发**  
    用 Webhook 传入订单号与金额。演示中小额为 `ORD-1042` / €60，大额为 `ORD-2077` / €2,000。
@@ -190,7 +202,7 @@ flowchart TD
 
 ## 前期构筑顺序
 
-以下为建议顺序，不是已决定的 Roadmap。结合本仓库，建议先把架构文档、Flow 元素词汇、示例 playbook、黑匣子字段设计写进 GitHub，再选一个最小可跑通的验证流。
+以下为建议顺序，不是已决定的完整 Roadmap。架构文档、Flow 元素词汇、参照示例 playbook 与黑匣子字段类别已经写入仓库。最小可跑通的验证流已选定场景为跨境电商；具体 Flow 尚未设计，也尚未跑通。
 
 | 事项 | 状态 | 说明 |
 | --- | --- | --- |
@@ -199,10 +211,10 @@ flowchart TD
 | 关于文案、拟用标签与对照范围已写入蓝图 | 已完成 | mindwill.dev；本文档即仓库中的蓝图正文 |
 | 把五层架构文档写入仓库 | 已完成 | 见本文「五层架构」 |
 | 沉淀 Flow 元素词汇 | 已完成 | 见本文「Flow 构建元素」 |
-| 写入退款审批示例 playbook | 已完成 | 作为验证用例，非线上业务 |
+| 写入退款审批示例 playbook | 已完成 | Windmill 演示的参照示例，不是已选定的第一条验证流，也不是线上业务 |
 | 设计黑匣子字段类别 | 已完成类别，不锁 schema | 输入、步骤结果、审批决策、重试、错误、Changelog |
 | 写入对照与参照笔记 | 本提交写入 | 见 [research-notes.md](research-notes.md)；整理笔记，非实测、非 Mindwill 已有认证 |
-| 选定一个最小可跑通的验证流并先跑通 | 未开始 | 尚未选定 |
+| 选定一个最小可跑通的验证流并先跑通 | 场景已定，设计与跑通未开始 | 场景为跨境电商。具体 Flow 尚未设计，也尚未运行 |
 
 ## 来源
 
