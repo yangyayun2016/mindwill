@@ -4,19 +4,64 @@
 
 ## 阅读说明
 
-本文是可迭代的前期构筑蓝图，不是已上线产品说明书。Flow 元素与退款流程提炼自 Windmill 官方「What is a flow」演示及文档。形成 90% 自动化是目标，不是现状。「经测试，性能优于 Windmill、Airflow、Prefect、Temporal 和 mindflow.io」是产品定位主张，本文未附测试方法或数据，不作为已验证结论。
+本文是可迭代的前期构筑蓝图，不是已上线产品说明书。Flow 元素与退款流程提炼自 Windmill 官方「What is a flow」演示及文档。形成 90% 自动化是目标，不是现状。「经测试，性能优于 Windmill、Airflow、Prefect、Temporal 和 mindflow.io」是产品定位主张，本文未附测试方法或数据，不作为已验证结论。后文写入的 LangGraph 分层与 GitHub / X.com 双端模板，规定的是构筑写法与执行层取向，不是已跑通的验证流，也不预设 JSON/YAML 字段 schema。
 
 ## 已拍板决策
 
-2026-11-23（Asia/Shanghai），所有者阳亚运 / Emily Starai 拍板以下三项。这三项按已定事实写入；站点域名仍未取舍。
+2026-11-23（Asia/Shanghai），所有者阳亚运 / Emily Starai 拍板以下事项。部署与工作流格式维持同日已写入的原文。验证流的场景在同日新增决策里收束为跨境电商亚马逊全框架 SOP，具体 Flow 仍未设计，也仍未运行。后三项为同日新增。这些按已定事实写入。站点域名、具体 JSON/YAML 字段 schema、对外品牌统一口径，以及具体第一条可跑通验证 Flow 仍开放。
 
 | 事项 | 决定 |
 | --- | --- |
-| 第一条可跑通的验证流 | 场景定为跨境电商。具体 Flow 尚未设计，也尚未运行；本文不写具体步骤 |
+| 第一条可跑通的验证流 | 场景定为跨境电商亚马逊全框架 SOP。具体 Flow 尚未设计，也尚未运行；本文不写具体步骤 |
 | 部署 | 私有云部署 |
 | 工作流格式 | Mindwill 自研格式：JSON / YAML，加上 TypeScript / Python。这是 Mindwill 自己的格式，不沿用 Windmill 的产品格式；具体 schema 尚未设计。文中的 Windmill Flow 词汇与退款店铺 playbook 只作参照，不是这条验证流，也不是已实现产品 |
+| 工作流底层编排框架 | 采用 LangGraph，作为自研 JSON/YAML 配置层之下的状态图执行层。私有云默认开源库自管加 Postgres。全文见下节 |
+| 双端构筑与同步发布机制 | 聚焦跨境电商亚马逊全框架 SOP。每个构筑同步沉淀到 GitHub，并在 X.com 同步发布构筑长文。全文见下节 |
+| 统一不可逆操作红线 | 对外发送、公开发布、动用资金、承诺价格或交付时间、删除数据，以及其他任何不可逆操作，都必须先停下来征得所有者本人同意。全文见下节，模板中原文保留 |
 
-站点域名仍开放。About 与拟用标签仍按 mindwill.dev 书写；Mindwill.io、Mindwill.ai、Mindwillai.com 仍是材料中出现过的候选，尚未宣布取舍。
+仍开放，本文不代为取舍：
+
+- 其余候选域名：Mindwill.io、Mindwill.ai、Mindwillai.com。About 与拟用标签仍按 mindwill.dev 书写；这三个名字仍是材料中出现过的候选，尚未宣布取舍。
+- 具体 JSON/YAML 字段 schema。工作流格式已定，字段尚未设计。
+- 对外品牌统一口径。
+- 具体第一条可跑通验证 Flow。场景已定为跨境电商亚马逊全框架 SOP；步骤、字段与跑通都还没有。
+
+### 工作流底层编排框架
+
+采用 [LangGraph](https://github.com/langchain-ai/langgraph)（MIT 开源，支持 Python 与 TypeScript `@langchain/langgraph`）。TypeScript 包的源码在 [langgraphjs](https://github.com/langchain-ai/langgraphjs)，该仓库许可也是 MIT。LangGraph 作为 Mindwill 自研 JSON/YAML 配置层之下的状态图执行层：上面仍是 Mindwill 自己的配置，不改用 Windmill 的产品格式；下面用状态图执行。具体字段 schema 尚未设计，本文不预设 JSON 或 YAML 的键名。
+
+写入本蓝图时核对到的核心原语：
+
+| 原语 | 在这层做什么 |
+| --- | --- |
+| `StateGraph` | 把一篇构筑对应的状态图搭起来 |
+| `Subgraphs` | 把一张状态图嵌进另一张图，用来装可复用子流程。这是 LangGraph 文档里的 subgraph 用法 |
+| Checkpointer，如 `PostgresSaver` | 把跑次状态留下来，使人机暂停之后还能从原处继续。Python 与 TypeScript 两侧都能见到这个 Postgres checkpointer 类名 |
+| `interrupt()` | 人机审批。图跑到这里停下，等所有者本人同意后再继续 |
+
+私有云默认取向为开源库自管加 Postgres。如后续评估 LangSmith Agent Server 自托管 / standalone，须另行确认其商业许可，当前不绑定。
+
+选定这一层不是性能实测结论。「经测试，性能优于 Windmill、Airflow、Prefect、Temporal 和 mindflow.io」仍是产品定位主张，本文未附测试方法或数据。形成 90% 自动化仍是目标，不是现状。Windmill Flow 词汇与退款店铺 playbook 仍只作参照。
+
+### 双端构筑与同步发布机制
+
+聚焦跨境电商亚马逊全框架 SOP。每个构筑同步沉淀到 GitHub，并在 X.com 同步发布构筑长文。
+
+GitHub 侧当前目录是 `docs/sop/` 与 `docs/bots/`。后续再配 `flows/`（自研 JSON/YAML）与 `graphs/`（LangGraph 的 Python 或 TypeScript 状态图）。本提交只把这两个目录写进说明，不创建它们，也不放入可运行代码。
+
+1 个构筑 = 1 篇 `docs/sop/NN-<slug>.md` + 关联的 `docs/bots/<bot>.md` + 1 篇结构一致的 X.com 长文。先把草稿写入仓库，经所有者本人同意后再公开发布。公开发布属于不可逆操作，适用下一节红线。
+
+内容结构参照 Andrew（`@s4yonnara`）的 [Grok Bot 社媒团队长文](https://x.com/s4yonnara/status/2119777956423700863)：以「The skill / app / system at a glance + 带人工审批闸门的原理图 + 分步判据」为骨架，叠加 `Memories` / `Skills` / `Routines` / `Integrations` 四栏与 Bot 职责卡。该文可见的栏目标题包括 “The system at a glance”，以及每步末尾的 “You're ready to move on when”。四栏与 Bot 职责卡是 Mindwill 在这个骨架上追加的栏目，不把该文里的社媒团队步骤、工具或价格写成 Mindwill 的事实。
+
+目录规范、事实分级与可复制模板见 [sop/README.md](sop/README.md)、[sop/_template.md](sop/_template.md)、[bots/_template.md](bots/_template.md)。
+
+### 统一不可逆操作红线
+
+凡是对外发送消息或文件、公开发布内容、动用资金、承诺价格或交付时间、删除数据，以及其他任何不可逆操作，都必须先停下来征得所有者本人同意。
+
+跨境运营补充闸门：店铺登录只在本地紫鸟、绝不上云；ERP 等外部系统的写操作与付款一律人工确认。
+
+上面两段写入 SOP 与 Bot 模板时原文保留，不可删减，也不可改写成更宽的例外。`interrupt()` 是执行层上对应人工审批闸门的原语。闸门有没有真的拦住写操作，要等具体 Flow 设计出来并人工跑通一轮之后才能确认。当前没有已跑通的验证流，自动 routine 也尚未开启。
 
 ## 定位与目标
 
@@ -69,6 +114,8 @@ flowchart LR
 | ⑤ 泛化层 | 能力不仅限于跨境电商，扩展到其他行业 | 可复用的流程元素、资产与学习成果 | 其他行业使用者 | 可迁移的能力与编排方法 |
 
 下层为上层提供连接、执行与记录；上层的监督与学习再反馈回编排与决策质量。
+
+工作流底层编排已定为 LangGraph 状态图，位于自研 JSON/YAML 配置之下，见「已拍板决策」。本图不表示该执行层已经接入，也不表示验证流已经跑通。
 
 ## Flow 构建元素
 
@@ -202,7 +249,7 @@ flowchart TD
 
 ## 前期构筑顺序
 
-以下为建议顺序，不是已决定的完整 Roadmap。架构文档、Flow 元素词汇、参照示例 playbook 与黑匣子字段类别已经写入仓库。最小可跑通的验证流已选定场景为跨境电商；具体 Flow 尚未设计，也尚未跑通。
+以下为建议顺序，不是已决定的完整 Roadmap。架构文档、Flow 元素词汇、参照示例 playbook、黑匣子字段类别与对照笔记已经写入仓库。最小可跑通的验证流已选定场景为跨境电商亚马逊 SOP；具体设计与跑通尚未开始。
 
 | 事项 | 状态 | 说明 |
 | --- | --- | --- |
@@ -213,8 +260,9 @@ flowchart TD
 | 沉淀 Flow 元素词汇 | 已完成 | 见本文「Flow 构建元素」 |
 | 写入退款审批示例 playbook | 已完成 | Windmill 演示的参照示例，不是已选定的第一条验证流，也不是线上业务 |
 | 设计黑匣子字段类别 | 已完成类别，不锁 schema | 输入、步骤结果、审批决策、重试、错误、Changelog |
-| 写入对照与参照笔记 | 本提交写入 | 见 [research-notes.md](research-notes.md)；整理笔记，非实测、非 Mindwill 已有认证 |
-| 选定一个最小可跑通的验证流并先跑通 | 场景已定，设计与跑通未开始 | 场景为跨境电商。具体 Flow 尚未设计，也尚未运行 |
+| 写入对照与参照笔记 | 已写入 | 见 [research-notes.md](research-notes.md)；整理笔记，非实测、非 Mindwill 已有认证 |
+| 写入 LangGraph 分层与 GitHub/X 双端构筑模板 | 本提交写入 | 见本文「已拍板决策」。模板见 [sop/README.md](sop/README.md)、[sop/_template.md](sop/_template.md)、[bots/_template.md](bots/_template.md)。尚未放入可运行代码 |
+| 选定一个最小可跑通的验证流并先跑通 | 场景已定（跨境电商亚马逊 SOP），具体设计与跑通未开始 | 场景为跨境电商亚马逊全框架 SOP。具体 Flow 尚未设计，也尚未运行 |
 
 ## 来源
 
@@ -224,3 +272,5 @@ flowchart TD
 - [Windmill alternatives and comparisons](https://www.windmill.dev/compare)
 - [Temporal](https://temporal.io/)
 - [Windmill Trust Center](https://trust.windmill.dev/)
+- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [Andrew (@s4yonnara) Grok Bot 社媒团队长文](https://x.com/s4yonnara/status/2119777956423700863)
