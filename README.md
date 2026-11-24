@@ -27,8 +27,11 @@
 - Flow 构建元素（步骤、数据与触发、编辑与容错）
 - 退款审批原理图与验证 Playbook
 - 资产、AI 学习、AI 监督与黑匣子
+- 已拍板决策（含 LangGraph 分层、GitHub / X.com 双端构筑、不可逆操作红线）
 - 竞品与对照范围（Windmill 官方对比目录 31 条，加 Mindwill 自身对照对象）
 - 前期构筑顺序
+
+亚马逊全框架 SOP 的目录规范、事实分级，以及 GitHub 与 X.com 双端同步原则，见 [docs/sop/README.md](docs/sop/README.md)。可直接复制填写的构筑模板见 [docs/sop/_template.md](docs/sop/_template.md)。Bot 身份与职责模板见 [docs/bots/_template.md](docs/bots/_template.md)。这些是写作模板，不是已跑通的 Flow，也不预设 JSON/YAML 字段 schema。
 
 对照阅读、Temporal 参照，以及 Windmill 信任中心的安全与合规摘记，见 [docs/research-notes.md](docs/research-notes.md)。这些是整理材料后的参照笔记，不是 Mindwill 的实测结论或已获得的认证。
 
@@ -39,3 +42,5 @@
 - [Windmill alternatives and comparisons](https://www.windmill.dev/compare)
 - [Temporal](https://temporal.io/)
 - [Windmill Trust Center](https://trust.windmill.dev/)
+- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [Andrew (@s4yonnara) Grok Bot 社媒团队长文](https://x.com/s4yonnara/status/2119777956423700863)
