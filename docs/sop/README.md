@@ -12,7 +12,13 @@
 | `docs/bots/<bot>.md` | 该构筑对应 Bot 的身份与职责。从 [bots/_template.md](../bots/_template.md) 复制。一个 Bot 可以被多篇 SOP 引用；一篇 SOP 指向它的主责 Bot |
 | `docs/sop/README.md`、`docs/sop/_template.md`、`docs/bots/_template.md` | 说明和模板，不是构筑正文，不占序号 |
 
-slug 一旦被公开引用就不再改名。需要改名时新开一篇，并在旧篇写明替代关系。当前还没有任何编号构筑。
+slug 一旦被公开引用就不再改名。需要改名时新开一篇，并在旧篇写明替代关系。已写入的编号构筑见下方清单。
+
+## 构筑清单
+
+| 篇 | 名称 | 状态 | X.com |
+| --- | --- | --- | --- |
+| [01-amazon-ops-framework-overview.md](01-amazon-ops-framework-overview.md) | 亚马逊运营框架 SOP 架构总览 | 草稿 | 未发布 |
 
 ## GitHub 与 X.com 双端同步
 
